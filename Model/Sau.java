@@ -40,7 +40,6 @@ public class Sau extends Chesspiece {
                 }
             }
         }
-        System.out.println("Valid moves for " + this + ": " + validMoves);
         return validMoves;
     }
 }

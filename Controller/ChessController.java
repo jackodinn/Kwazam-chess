@@ -119,7 +119,17 @@ public class ChessController {
                 if (col != selectedPos.getX() || row != selectedPos.getY()) {
                     if (model.movePiece(selectedPos.getX(), selectedPos.getY(), col, row)) {
                         board.refreshBoard(model);
-                        model.processRound();
+                        
+                        if(model.isGameOver())
+                        {
+                            JOptionPane.showMessageDialog(board, "Game Over! " + model.getCurrentPlayer() + " wins!");
+                            model.resetGame();
+                            board.refreshBoard(model);
+                        }
+                        else
+                        {
+                            model.processRound();
+                        }
                     } else {
                         // If the move is invalid, restore the icon to the original label
                         board.boardLabels[selectedPos.getY()][selectedPos.getX()].setIcon(draggedPieceIcon);
