@@ -129,6 +129,7 @@ public class ChessController {
                         else
                         {
                             model.processRound();
+                            board.refreshBoard(model);
                         }
                     } else {
                         // If the move is invalid, restore the icon to the original label

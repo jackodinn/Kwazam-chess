@@ -23,11 +23,11 @@ public class Sau extends Chesspiece {
         int currentY = position.getY();
         
         // Implement movement
-        int[][] moveSets = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {-1, 1}, {-1, -1}, {1, -1}, {1, 1}};
+        int[][] movement = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {-1, 1}, {-1, -1}, {1, -1}, {1, 1}};
 
-        for (int[] moveSet : moveSets) {
-            int targetX = currentX + moveSet[0];
-            int targetY = currentY + moveSet[1];
+        for (int[] moves : movement) {
+            int targetX = currentX + moves[0];
+            int targetY = currentY + moves[1];
             
             if (targetX >= 0 && targetY >= 0 && targetX < cboard.getBoardWidth() && targetY < cboard.getBoardHeight()) {
                 Chesspiece target = cboard.getPiece(targetX, targetY);
