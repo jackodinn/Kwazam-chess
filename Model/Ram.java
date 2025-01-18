@@ -29,6 +29,7 @@ public class Ram extends Chesspiece {
         int currentX = position.getX();
         int currentY = position.getY();
         int nextY = currentY + moveDirection;
+        int nextnextY = nextY + moveDirection;
         Chesspiece targetPiece = model.getPiece(currentX, nextY);
         System.out.println("Current X: " + currentX + " Current Y: " + currentY);
         System.out.println("Next Y: " + nextY);

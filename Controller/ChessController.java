@@ -56,37 +56,44 @@ public class ChessController {
             selectedPos = new Position(col, row);
             Chesspiece piece = model.getPiece(col, row);
             if (piece != null) {
-                //if a piece is clicked
+                // If a piece is clicked
                 if (piece.getColor() == model.getCurrentColor()) {
                     board.selectedPiece = piece;
                     draggedPieceIcon = piece.getImagePath();
                     draggedPieceLabel = new JLabel(draggedPieceIcon);
                     draggedPieceLabel.setOpaque(false);
-                    board.getLayeredPane().add(draggedPieceLabel, JLayeredPane.DRAG_LAYER);//take selected piece and throw into layered pane level
+                    board.getLayeredPane().add(draggedPieceLabel, JLayeredPane.DRAG_LAYER);// Take selected piece and throw into layered pane level
                     // Set the initial position of the dragged label
                     Point p = SwingUtilities.convertPoint(board, e.getX(), e.getY(), board.getLayeredPane());//pinpoint cursor
                     draggedPieceLabel.setBounds(p.x - draggedPieceIcon.getIconWidth() / 2, p.y - draggedPieceIcon.getIconHeight() / 2, draggedPieceIcon.getIconWidth(), draggedPieceIcon.getIconHeight());
-                    board.repaint(); // Ensure the label is visible immediately
+                    board.repaint();
                     // Temporarily clear the icon from the original board label
-                    JLabel pieceOnBoard = board.boardLabels[row][col]; //when dragging piece, hide the original icon
+                    if (board.isFlipped()) {
+                        col = model.getBoardWidth() - 1 - col;
+                        row = model.getBoardHeight() - 1 - row;
+                        JLabel pieceOnBoard = board.boardLabels[row][col];
+                        pieceOnBoard.setIcon(null);
+                    pieceOnBoard.repaint();
+                    } else {
+                    JLabel pieceOnBoard = board.boardLabels[row][col]; // When dragging piece, hide the original icon
                     pieceOnBoard.setIcon(null);
                     pieceOnBoard.repaint();
-
+                    }
                     System.out.println("Piece selected at: " + col + ", " + row);
 
-                    // while dragging, highlight available moves
+                    // While dragging, highlight available moves
                     highlightValidMoves(piece);
                 } else {
-                    //if current player try to move enemy piece
+                    // If current player try to move enemy piece
                     System.out.println("Cannot move enemy piece");
                 }
             } else {
-                //if nothing is clicked
+                // If nothing is clicked
                 System.out.println("No piece selected.");
             }
         }
 
-        //directly use piece movement logic as parameter to highlight valid moves
+        // Directly use piece movement logic as parameter to highlight valid moves
         private void highlightValidMoves(Chesspiece piece) {
             if (piece != null) {
                 Set<Position> validMoves = piece.ifValidMove(model);
@@ -107,7 +114,7 @@ public class ChessController {
             }
         }
 
-        //clear highlighting after completing an action
+        // Clear highlighting after completing an action
         private void clearHighlighting() {
             for (int r = 0; r < model.getBoardHeight(); r++) {
                 for (int c = 0; c < model.getBoardWidth(); c++) {
@@ -137,7 +144,6 @@ public class ChessController {
                     row = model.getBoardHeight() - 1 - row;
                 }
 
-                //the positioning bug occured here
                 // Only attempt to move if the release position is different from the press position
                 if (col != selectedPos.getX() || row != selectedPos.getY()) {
                     if (model.movePiece(selectedPos.getX(), selectedPos.getY(), col, row)) {
@@ -146,18 +152,16 @@ public class ChessController {
                         if(model.isGameOver())
                         {
                             JOptionPane.showMessageDialog(board, "Game Over! " + model.getCurrentPlayer() + " wins!");
-                            model.resetGame();
-                            board.refreshBoard(model);
+                            model.closeGame(board);
                         }
                         else
                         {
-                            model.processRound();
+                            model.processRound(board.selectedPiece);
                             board.flipBoard(model); // Flip the board after each turn
                             board.refreshBoard(model);
                         }
                     } else {
                         // If invalid move
-                        
                         board.boardLabels[selectedPos.getY()][selectedPos.getX()].setIcon(draggedPieceIcon);
                         board.boardLabels[selectedPos.getY()][selectedPos.getX()].repaint();
                         board.refreshBoard(model);

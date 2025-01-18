@@ -1,5 +1,6 @@
 package Model;
 
+import View.Chessboard;
 import java.awt.*;
 import java.util.*;
 
@@ -14,7 +15,6 @@ public class ChessModel {
         board = new Chesspiece[8][5];
         currentPlayer = Color.blue;
     }
-
     public void setRound(int round) {
         this.round = round;
     }
@@ -25,9 +25,6 @@ public class ChessModel {
 
     public void incRound() {
         round++;
-        if (round % 4 == 0) {
-            transPiece();
-        }
     }
     public void setCurrentPlayer(Color currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -155,14 +152,23 @@ public class ChessModel {
         return col >= 0 && row >= 0 && row < getBoardHeight() && col < getBoardWidth();
     }
 
-    public void processRound() {
+    public void processRound(Chesspiece piece) {
         incRound();
-        if (getRound() % 2 == 0) {
+        if (round % 2 == 0) {
             setCurrentPlayer(Color.BLUE);
             System.out.println(getCurrentPlayer() + "'s Turn");
         } else {
             setCurrentPlayer(Color.RED);
             System.out.println(getCurrentPlayer() + "'s Turn");
+        }
+        if (round % 4 == 0) {
+            transPiece();
+        }
+        if (piece.getClass().getSimpleName().equals("Ram")) {
+            int y = piece.getPos().getY();
+            if (y == 0 || y == 7) {
+                piece.setImageIcon(piece.rotateImageIcon(piece.getImagePath()));
+            }
         }
     }
 
@@ -174,13 +180,9 @@ public class ChessModel {
         }
     }
 
-    public void resetGame() {
-        System.out.println("Resetting pieces...");
-        clearChessPiece();
-        initializeChesspiece();
-        currentPlayer = Color.blue;
-        round = 0;
-        System.out.println("Done reset!");
+    public void closeGame(Chessboard board) {
+        System.out.println("Closing game...");
+        board.dispose();
     }
 
     public void transPiece() {
