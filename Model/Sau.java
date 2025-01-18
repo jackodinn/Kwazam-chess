@@ -17,7 +17,7 @@ public class Sau extends Chesspiece {
     }
 
     @Override
-    public Set<Position> ifValidMove(ChessModel cboard) {
+    public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();
         int currentX = position.getX();
         int currentY = position.getY();
@@ -29,8 +29,8 @@ public class Sau extends Chesspiece {
             int targetX = currentX + moves[0];
             int targetY = currentY + moves[1];
             
-            if (targetX >= 0 && targetY >= 0 && targetX < cboard.getBoardWidth() && targetY < cboard.getBoardHeight()) {
-                Chesspiece target = cboard.getPiece(targetX, targetY);
+            if (targetX >= 0 && targetY >= 0 && targetX < model.getBoardWidth() && targetY < model.getBoardHeight()) {
+                Chesspiece target = model.getPiece(targetX, targetY);
                 if (target != null) {
                     if (!target.getColor().equals(getColor())) {
                         validMoves.add(new Position(targetX, targetY));

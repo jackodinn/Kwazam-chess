@@ -1,7 +1,7 @@
+// Chessboard.java
 package View;
 
-import Model.ChessModel;
-import Model.Chesspiece;
+import Model.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -10,6 +10,7 @@ public class Chessboard extends JFrame {
     public JLabel[][] boardLabels;
     private int height = 8; // Number of rows
     private int width = 5;  // Number of columns
+    private boolean isFlipped = false; // Track if the board is flipped
 
     public Chesspiece selectedPiece;
 
@@ -51,12 +52,38 @@ public class Chessboard extends JFrame {
     public void refreshBoard(ChessModel model) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
+                int displayRow = isFlipped ? height - 1 - row : row;
+                int displayCol = isFlipped ? width - 1 - col : col;
+
                 Chesspiece piece = model.getPiece(col, row);
-                JLabel label = boardLabels[row][col];
+                JLabel label = boardLabels[displayRow][displayCol];
                 if (piece != null) {
                     label.setIcon(piece.getImagePath());
                 } else {
                     label.setIcon(null);
+                }
+            }
+        }
+    }
+
+    public void flipBoard(ChessModel model) {
+        isFlipped = !isFlipped;
+        rotatePieceImages(model);
+        refreshBoard(model);
+    }
+
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+
+    private void rotatePieceImages(ChessModel model) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Chesspiece piece = model.getPiece(col, row);
+                if (piece != null) {
+                    ImageIcon currentIcon = piece.getImagePath();
+                    ImageIcon rotatedIcon = piece.rotateImageIcon(currentIcon);
+                    piece.setImageIcon(rotatedIcon);
                 }
             }
         }
