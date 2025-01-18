@@ -11,7 +11,6 @@ public abstract class Chesspiece {
     protected Color color;
 
     public Chesspiece(Color color, String imagePath, Position pos) {
-        System.out.println("Loading Chesspieces...");
         this.color = color;
         this.images = resizeImageIcon(new ImageIcon(getClass().getResource(imagePath)), 90, 90); // Resize to 60x60 pixels
         this.position = pos;
@@ -78,7 +77,7 @@ public abstract class Chesspiece {
     @Override
     public String toString() {
         Position pos = getPos();
-        return getColorString() + " " + getClass().getSimpleName() + " at (" + pos.getX() + ", " + pos.getY() + ")";
+        return getColorString() + " " + getClass().getSimpleName();
     }
 
 }

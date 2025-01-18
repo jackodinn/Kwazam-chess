@@ -79,13 +79,11 @@ public class ChessController {
                     pieceOnBoard.setIcon(null);
                     pieceOnBoard.repaint();
                     }
-                    System.out.println("Piece selected at: " + col + ", " + row);
-
                     // While dragging, highlight available moves
                     highlightValidMoves(piece);
                 } else {
                     // If current player try to move enemy piece
-                    System.out.println("Cannot move enemy piece");
+                    System.out.println("WARNING! Cannot move enemy piece");
                 }
             } else {
                 // If nothing is clicked

@@ -21,6 +21,8 @@ public class LauncherController {
         ChessController chessController = new ChessController(model, view);
         view.setVisible(true);
         System.out.println("Launched!");
+        model.displayRound();
+        System.out.println(model.getCurrentPlayer() + "'s Turn");
         launcher.setVisible(true);
     }
 }

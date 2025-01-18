@@ -3,6 +3,8 @@ package Model;
 import View.Chessboard;
 import java.awt.*;
 import java.util.*;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 public class ChessModel {
 
@@ -14,7 +16,9 @@ public class ChessModel {
         System.out.println("Loading Model..");
         board = new Chesspiece[8][5];
         currentPlayer = Color.blue;
+        clearLogs();
     }
+
     public void setRound(int round) {
         this.round = round;
     }
@@ -26,6 +30,7 @@ public class ChessModel {
     public void incRound() {
         round++;
     }
+
     public void setCurrentPlayer(Color currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
@@ -51,7 +56,7 @@ public class ChessModel {
     }
 
     public int getBoardHeight() {
-        return board.length;    // Number of rows
+        return board.length; // Number of rows
     }
 
     public void setPiece(int col, int row, Chesspiece cp) {
@@ -121,9 +126,7 @@ public class ChessModel {
         Chesspiece movingPiece = getPiece(fromCol, fromRow);
         Set<Position> validMoves;
         validMoves = movingPiece.ifValidMove(this);
-        System.out.println("Moving Piece: " + movingPiece);
-        System.out.println("Valid Moves: " + validMoves);
-        System.out.println("Target Position: (" + toCol + ", " + toRow + ")");
+        boolean captured = false;
 
         if (!validMoves.contains(new Position(toCol, toRow))) {
             System.out.println("Invalid move for this piece.");
@@ -133,18 +136,25 @@ public class ChessModel {
         Chesspiece targetPiece = getPiece(toCol, toRow);
         if (targetPiece != null) {
             if (targetPiece.getColor().equals(movingPiece.getColor())) {
-                System.out.println("Cannot move to a position occupied by your own piece.");
+                System.out.println("WARNING! Cannot move to a position occupied by your own piece.");
                 return false;
             } else {
-                System.out.println("Capturing opponent's piece.");
+                captured = true;
                 board[toRow][toCol] = null;
             }
         }
-
         board[toRow][toCol] = movingPiece;
         board[fromRow][fromCol] = null;
         movingPiece.setPos(new Position(toCol, toRow));
-        System.out.println("Moved piece to (" + toCol + ", " + toRow + ")");
+        if (captured) {
+            System.out.println("Capturing Piece: " + movingPiece + " (" + fromCol + ", " + fromRow + ") x "
+                    + targetPiece + " (" + toCol + ", " + toRow + ")");
+            logging(captured, movingPiece, targetPiece, fromCol, fromRow, toCol, toRow);
+        } else {
+            System.out.println("Moving Piece: " + movingPiece + " (" + fromCol + ", " + fromRow + ") -> (" + toCol
+                    + ", " + toRow + ")");
+            logging(captured, movingPiece, targetPiece, fromCol, fromRow, toCol, toRow);
+        }
         return true;
     }
 
@@ -152,10 +162,16 @@ public class ChessModel {
         return col >= 0 && row >= 0 && row < getBoardHeight() && col < getBoardWidth();
     }
 
+    public void displayRound() {
+        System.out.printf("Turn %d", (round / 2));
+        System.out.println();
+    }
+
     public void processRound(Chesspiece piece) {
         incRound();
         if (round % 2 == 0) {
             setCurrentPlayer(Color.BLUE);
+            displayRound();
             System.out.println(getCurrentPlayer() + "'s Turn");
         } else {
             setCurrentPlayer(Color.RED);
@@ -271,5 +287,37 @@ public class ChessModel {
             return true;
         }
         return false; // Game is not over
+    }
+
+    public void logging(boolean capture, Chesspiece movingPiece, Chesspiece targetPiece, int fromCol, int fromRow,
+            int toCol, int toRow) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("terminal_log.txt", true);
+                PrintStream printStream = new PrintStream(fileOutputStream)) {
+
+            if (currentPlayer == Color.BLUE) {
+                printStream.printf("Turn %d", (round/2));
+                printStream.println();
+            }
+            if (capture) {
+                printStream.println(movingPiece + " (" + fromCol + ", " + fromRow + ") x " + targetPiece + " (" + toCol
+                        + ", " + toRow + ")");
+            } else {
+                printStream
+                        .println(movingPiece + " (" + fromCol + ", " + fromRow + ") -> (" + toCol + ", " + toRow + ")");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error writing to terminal_log.txt");
+        }
+    }
+
+    public void clearLogs() {
+        try (PrintStream printStream = new PrintStream("terminal_log.txt")) {
+            // Opening the file in write mode (without append) clears its content
+            printStream.print(""); // Write an empty string to clear the file
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error clearing terminal_log.txt");
+        }
     }
 }
