@@ -22,7 +22,7 @@ public class Launcher extends JFrame {
         setSize(500, 350);
         setLocation(750, 250);
         setResizable(false);
-        frame.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
+        frame.setBorder(BorderFactory.createEmptyBorder(25, 100, 25, 100));
         ImageIcon logoIcon = new ImageIcon("images/KwazamLogo.png");
         Image image = logoIcon.getImage();
         Image resizedImage = image.getScaledInstance(250, 100, Image.SCALE_SMOOTH);
@@ -63,7 +63,7 @@ public class Launcher extends JFrame {
             popupframe.dispose();
         }
         popupframe = new JFrame("Rules");
-        popupframe.setSize(600, 500); // Increased size for more content
+        popupframe.setSize(750, 500); // Increased size for more content
         popupframe.setLayout(new BorderLayout());
         popupframe.setResizable(false);
         popupframe.setLocationByPlatform(true);
