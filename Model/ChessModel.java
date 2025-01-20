@@ -1,16 +1,20 @@
+//ChessModel.java
 package Model;
 
 import View.Chessboard;
 import java.awt.*;
+import java.io.*;
 import java.util.*;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
-public class ChessModel {
+public class ChessModel implements Serializable {
 
     protected Color currentPlayer;
     private int round = 0;
     private Chesspiece[][] board;
+    private int rows = 8;
+    private int cols = 5;
+
+    private static final long serialVersionUID = 1L; //add a serialversionuid for version control
 
     public ChessModel() {
         System.out.println("Loading Model..");
@@ -98,22 +102,22 @@ public class ChessModel {
         }
 
         for (int col = 0; col < 5; col++) {
-            board[1][col] = new Ram(Color.RED, "/images/Ram.png", new Position(col, 1));
+            board[1][col] = new Ram(Color.RED, "/images/RamRed.png", new Position(col, 1));
             switch (col) {
                 case 0:
-                    board[0][col] = new Tor(Color.RED, "/images/Tor.png", new Position(col, 0));
+                    board[0][col] = new Tor(Color.RED,"/images/TorRed.png",  new Position(col, 0));
                     break;
                 case 1:
-                    board[0][col] = new Biz(Color.RED, "/images/Biz.png", new Position(col, 0));
+                    board[0][col] = new Biz(Color.RED, "/images/BizRed.png", new Position(col, 0));
                     break;
                 case 2:
-                    board[0][col] = new Sau(Color.RED, "/images/Sau.png", new Position(col, 0));
+                    board[0][col] = new Sau(Color.RED, "/images/SauRed.png", new Position(col, 0));
                     break;
                 case 3:
-                    board[0][col] = new Biz(Color.RED, "/images/Biz.png", new Position(col, 0));
+                    board[0][col] = new Biz(Color.RED, "/images/BizRed.png", new Position(col, 0));
                     break;
                 case 4:
-                    board[0][col] = new Xor(Color.RED, "/images/Xor.png", new Position(col, 0));
+                    board[0][col] = new Xor(Color.RED, "/images/XorRed.png", new Position(col, 0));
                     break;
             }
         }
@@ -189,8 +193,8 @@ public class ChessModel {
     }
 
     public void clearChessPiece() {
-        for (int y = 0; y < getBoardHeight(); y++) {
-            for (int x = 0; x < getBoardHeight(); x++) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 5; x++) {
                 board[y][x] = null;
             }
         }
@@ -212,7 +216,7 @@ public class ChessModel {
                         tempColor = piece.getColor();
                         board[row][col] = null;
                         if (tempColor == Color.RED) {
-                            board[row][col] = new Xor(Color.RED, "/images/Xor.png", new Position(col, row));
+                            board[row][col] = new Xor(Color.RED, "/images/XorRed.png", new Position(col, row));
                         } else {
                             board[row][col] = new Xor(Color.BLUE, "/images/XorBlue.png", new Position(col, row));
                         }
@@ -220,7 +224,7 @@ public class ChessModel {
                         tempColor = piece.getColor();
                         board[row][col] = null;
                         if (tempColor == Color.RED) {
-                            board[row][col] = new Tor(Color.RED, "/images/Tor.png", new Position(col, row));
+                            board[row][col] = new Tor(Color.RED, "/images/TorRed.png", new Position(col, row));
                         } else {
                             board[row][col] = new Tor(Color.BLUE, "/images/TorBlue.png", new Position(col, row));
                         }
@@ -291,11 +295,10 @@ public class ChessModel {
 
     public void logging(boolean capture, Chesspiece movingPiece, Chesspiece targetPiece, int fromCol, int fromRow,
             int toCol, int toRow) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream("terminal_log.txt", true);
-                PrintStream printStream = new PrintStream(fileOutputStream)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("terminal_log.txt", true); PrintStream printStream = new PrintStream(fileOutputStream)) {
 
             if (currentPlayer == Color.BLUE) {
-                printStream.printf("Turn %d", (round/2));
+                printStream.printf("Turn %d", (round / 2));
                 printStream.println();
             }
             if (capture) {
@@ -319,5 +322,40 @@ public class ChessModel {
             e.printStackTrace();
             System.out.println("Error clearing terminal_log.txt");
         }
+    }
+
+    public String getGameStateAsString() {
+        StringBuilder sb = new StringBuilder();
+
+        // Save the current player
+        sb.append("CurrentPlayer:").append(getCurrentPlayer()).append("\n");
+
+        // Save the round number
+        sb.append("Round:").append(getRound()).append("\n");
+
+        // Save the board state
+        sb.append("Board:\n");
+        for (int row = 0; row < getBoardHeight(); row++) {
+            for (int col = 0; col < getBoardWidth(); col++) {
+                Chesspiece piece = getPiece(col, row);
+                if (piece != null) {
+                    sb.append(piece.getClass().getSimpleName()) // Piece type
+                            .append(",")
+                            .append(piece.getColor() == Color.BLUE ? "Blue" : "Red") // Piece color
+                            .append(",")
+                            .append(col).append(",").append(row) // Piece position
+                            .append("\n");
+                } else {
+                    sb.append("Empty,").append(col).append(",").append(row).append("\n");
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public String getDimensionAsString()
+    {
+        return "Dimensions:" + rows + "," + cols + "\n";
     }
 }
