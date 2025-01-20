@@ -19,13 +19,13 @@ public class Launcher extends JFrame {
         JPanel frame = new JPanel();
         frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
         add(frame);
-        setSize(500, 500);
-        setLocation(800, 350);
+        setSize(500, 350);
+        setLocation(750, 250);
         setResizable(false);
-        frame.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
+        frame.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
         ImageIcon logoIcon = new ImageIcon("images/KwazamLogo.png");
         Image image = logoIcon.getImage();
-        Image resizedImage = image.getScaledInstance(170, 150, Image.SCALE_SMOOTH);
+        Image resizedImage = image.getScaledInstance(250, 100, Image.SCALE_SMOOTH);
         ImageIcon resizedLogo = new ImageIcon(resizedImage);
 
         JLabel logoLabel = new JLabel(resizedLogo);
