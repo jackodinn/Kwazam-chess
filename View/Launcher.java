@@ -1,3 +1,4 @@
+//Launcher.java
 package View;
 
 import java.awt.*;
@@ -9,16 +10,33 @@ public class Launcher extends JFrame {
     private static JFrame popupframe;
     private JButton launchButton;
     private JButton rulesButton;
+    private JButton loadGameButton;
+    private JButton button4;
+    private JButton button5;
 
     public Launcher() {
         setTitle("Kwazam Chess Launcher");
-        JPanel frame = new JPanel(new GridLayout(3, 1));
+        JPanel frame = new JPanel();
+        frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
         add(frame);
         setSize(500, 500);
         setLocation(800, 350);
+        setResizable(false);
+        frame.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
+        ImageIcon logoIcon = new ImageIcon("images/KwazamLogo.png");
+        Image image = logoIcon.getImage();
+        Image resizedImage = image.getScaledInstance(170, 150, Image.SCALE_SMOOTH);
+        ImageIcon resizedLogo = new ImageIcon(resizedImage);
+
+        JLabel logoLabel = new JLabel(resizedLogo);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the image
+        frame.add(logoLabel);
+        frame.add(Box.createRigidArea(new Dimension(0, 10)));
 
         launchButton = new JButton("Play Kwazam Chess");
+        launchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         frame.add(launchButton);
+        frame.add(Box.createRigidArea(new Dimension(0, 10)));
 
         rulesButton = new JButton("Rules");
         frame.add(rulesButton);
@@ -28,15 +46,27 @@ public class Launcher extends JFrame {
                 showRulesWindow();
             }
         });
+        rulesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        loadGameButton = new JButton("Load Game");
+        loadGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.add(loadGameButton);
+        frame.add(Box.createRigidArea(new Dimension(0, 10)));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
 
     private static void showRulesWindow() {
+        if (popupframe != null && popupframe.isVisible()) {
+            popupframe.dispose();
+        }
         popupframe = new JFrame("Rules");
-        popupframe.setSize(600, 600); // Increased size for more content
+        popupframe.setSize(600, 500); // Increased size for more content
         popupframe.setLayout(new BorderLayout());
+        popupframe.setResizable(false);
+        popupframe.setLocationByPlatform(true);
 
         // Game rules as a string - UPDATED WITH FULL RULES
         String rulesText = """
@@ -65,10 +95,17 @@ public class Launcher extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(rules); // Added scroll pane
         popupframe.add(scrollPane, BorderLayout.CENTER);
+        popupframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose on close to allow reopening
         popupframe.setVisible(true);
+
     }
 
     public JButton getLaunchButton() {
         return launchButton;
     }
+
+    public JButton getLoadButton() {
+        return loadGameButton;
+    }
+
 }

@@ -1,11 +1,14 @@
 Turn 0
-Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
-Turn 1
 Blue Ram (2, 6) -> (2, 5)
 Red Ram (2, 1) -> (2, 2)
+Turn 1
+Blue Biz (3, 7) -> (4, 5)
+Red Ram (1, 1) -> (1, 2)
 Turn 2
-Blue Ram (2, 5) -> (2, 4)
-Red Ram (2, 2) -> (2, 3)
+Blue Biz (4, 5) -> (3, 3)
+Red Biz (3, 0) -> (4, 2)
 Turn 3
-Blue Ram (2, 4) x Red Ram (2, 3)
+Blue Biz (3, 3) x Red Ram (1, 2)
+Red Ram (2, 2) -> (2, 3)
+Turn 4
+Blue Biz (1, 2) x Red Sau (2, 0)

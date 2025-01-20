@@ -1,4 +1,3 @@
-// Chessboard.java
 package View;
 
 import Model.*;
@@ -14,6 +13,8 @@ public class Chessboard extends JFrame {
 
     public Chesspiece selectedPiece;
 
+    private JMenuItem saveGameItem;
+
     public Chessboard() {
         this.boardLabels = new JLabel[height][width];
         setTitle("Kwazam Chess");
@@ -21,6 +22,43 @@ public class Chessboard extends JFrame {
         int squareSize = 100;
         setSize(width * squareSize, height * squareSize);
         setLayout(new GridLayout(height, width));
+        setResizable(false);
+        setLocationByPlatform(true);
+
+        // Add the menu bar
+        addMenuBar();
+    }
+
+    private void addMenuBar() {
+        // Create the menu bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create the "File" menu
+        JMenu fileMenu = new JMenu("File");
+        saveGameItem = new JMenuItem("Save Game");
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        // Add action listeners to the menu items
+        saveGameItem.addActionListener(e -> {
+            System.out.println("Save Game & Exit");
+            // Add save game logic here
+        });
+
+        exitItem.addActionListener(e -> {
+            System.out.println("Exit clicked");
+            System.exit(0); // Exit the application
+        });
+
+        // Add items to the "File" menu
+        fileMenu.add(saveGameItem);
+        fileMenu.addSeparator(); // Add a separator line
+        fileMenu.add(exitItem);
+
+        // Add menus to the menu bar
+        menuBar.add(fileMenu);
+
+        // Set the menu bar to the JFrame
+        setJMenuBar(menuBar);
     }
 
     public void initializeBoard(ChessModel model) {
@@ -87,5 +125,10 @@ public class Chessboard extends JFrame {
                 }
             }
         }
+    }
+
+    public JMenuItem getSaveGameMenuItem()
+    {
+        return saveGameItem;
     }
 }
