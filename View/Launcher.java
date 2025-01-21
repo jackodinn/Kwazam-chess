@@ -63,7 +63,7 @@ public class Launcher extends JFrame {
             popupframe.dispose();
         }
         popupframe = new JFrame("Rules");
-        popupframe.setSize(750, 500); // Increased size for more content
+        popupframe.setSize(600, 500); // Increased size for more content
         popupframe.setLayout(new BorderLayout());
         popupframe.setResizable(false);
         popupframe.setLocationByPlatform(true);
