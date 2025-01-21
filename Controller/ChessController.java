@@ -17,7 +17,6 @@ public class ChessController {
     private ImageIcon draggedPieceIcon = null;
     private static final Border border = BorderFactory.createEmptyBorder();
 
-
     public ChessController(ChessModel model, Chessboard board) {
         System.out.println("Loading ChessController..");
         this.model = model;
@@ -42,18 +41,32 @@ public class ChessController {
     }
 
     private void saveGame() {
-        String fileName = "game_1.txt"; // File to save the game state
+        // Prompt the user to enter a name for the saved game
+        String gameName = JOptionPane.showInputDialog(board, "Enter a name for the saved game:");
+        if (gameName == null || gameName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(board, "Game name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Create the "saves" directory if it doesn't exist
+        File savesDir = new File("saves");
+        if (!savesDir.exists()) {
+            savesDir.mkdir();
+        }
+
+        // Generate the filename
+        String fileName = "saves/" + gameName.toLowerCase().replace(" ", "_") + ".txt";
+
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(fileName))) {
             String dimensionState = model.getDimensionAsString();
-            // Get the game state as a string
             String gameState = model.getGameStateAsString();
-            // Write the game state to the file
             writer.write(dimensionState);
             writer.write(gameState);
             System.out.println("Game saved successfully to " + fileName);
+            JOptionPane.showMessageDialog(board, "Game saved as: " + gameName, "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error saving the game.");
+            JOptionPane.showMessageDialog(board, "Error saving the game.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

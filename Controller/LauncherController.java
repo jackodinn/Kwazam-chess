@@ -16,7 +16,7 @@ public class LauncherController implements WindowFocusListener {
     private final Launcher launcher;
     private static JFrame popupframe;
     private static JFrame settingsFrame;
-    private Clip menuMusicClip;
+    private Clip menuMusicClip; // To control menu music (using Clip for WAV)
 
     public LauncherController(Launcher launcher) {
         this.launcher = launcher;
@@ -46,7 +46,7 @@ public class LauncherController implements WindowFocusListener {
         System.out.println("Launched!");
         model.displayRound();
         System.out.println(model.getCurrentPlayer() + "'s Turn");
-        launcher.setVisible(false);
+        launcher.setVisible(true);
     }
 
     private void handleLoad() {
@@ -57,7 +57,7 @@ public class LauncherController implements WindowFocusListener {
         }
 
         popupframe = new JFrame("Load old games...");
-        popupframe.setSize(400, 150);
+        popupframe.setSize(250, 150);
         popupframe.setLayout(new BorderLayout());
 
         JPanel panel = new JPanel();
@@ -70,8 +70,22 @@ public class LauncherController implements WindowFocusListener {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JComboBox<String> gameComboBox = new JComboBox<>();
-        gameComboBox.addItem("Game 1");
         gameComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Scan the "saves" directory for saved games
+        File savesDir = new File("saves");
+        if (savesDir.exists() && savesDir.isDirectory()) {
+            File[] savedGames = savesDir.listFiles((dir, name) -> name.endsWith(".txt"));
+            if (savedGames != null) {
+                for (File file : savedGames) {
+                    String gameName = file.getName().replace(".txt", "").replace("_", " ");
+                    gameComboBox.addItem(gameName);
+                }
+            }
+        } else {
+            gameComboBox.addItem("No saved games found");
+        }
+
         panel.add(gameComboBox);
 
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -85,7 +99,7 @@ public class LauncherController implements WindowFocusListener {
             public void actionPerformed(ActionEvent e) {
                 stopMenuMusic();
                 String selectedGame = (String) gameComboBox.getSelectedItem();
-                if (selectedGame != null) {
+                if (selectedGame != null && !selectedGame.equals("No saved games found")) {
                     loadGame(selectedGame);
                     popupframe.dispose();
                 }
@@ -93,12 +107,12 @@ public class LauncherController implements WindowFocusListener {
         });
 
         popupframe.add(panel, BorderLayout.CENTER);
-        popupframe.setLocation(800, 300);
+        popupframe.setLocation(750, 250);
         popupframe.setVisible(true);
     }
 
     private void loadGame(String gameName) {
-        String fileName = gameName.toLowerCase().replace(" ", "_") + ".txt";
+        String fileName = "saves/" + gameName.toLowerCase().replace(" ", "_") + ".txt";
         System.out.println("Attempting to load game from: " + fileName);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
