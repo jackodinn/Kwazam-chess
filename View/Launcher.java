@@ -11,18 +11,20 @@ public class Launcher extends JFrame {
     private JButton launchButton;
     private JButton rulesButton;
     private JButton loadGameButton;
-    private JButton button4;
-    private JButton button5;
 
     public Launcher() {
         setTitle("Kwazam Chess Launcher");
-        JPanel frame = new JPanel();
-        frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
-        add(frame);
+
+        // Create the custom background panel
+        Background bg = new Background("images/background.png"); // Replace with your image path
+        bg.setLayout(new BoxLayout(bg, BoxLayout.PAGE_AXIS));
+        setContentPane(bg); // Set the custom panel as the content pane
+
         setSize(500, 350);
         setLocation(750, 250);
         setResizable(false);
-        frame.setBorder(BorderFactory.createEmptyBorder(25, 100, 25, 100));
+        bg.setBorder(BorderFactory.createEmptyBorder(25, 100, 25, 100));
+
         ImageIcon logoIcon = new ImageIcon("images/KwazamLogo.png");
         Image image = logoIcon.getImage();
         Image resizedImage = image.getScaledInstance(250, 100, Image.SCALE_SMOOTH);
@@ -30,16 +32,16 @@ public class Launcher extends JFrame {
 
         JLabel logoLabel = new JLabel(resizedLogo);
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the image
-        frame.add(logoLabel);
-        frame.add(Box.createRigidArea(new Dimension(0, 10)));
+        bg.add(logoLabel);
+        bg.add(Box.createRigidArea(new Dimension(0, 10)));
 
         launchButton = new JButton("Play Kwazam Chess");
         launchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        frame.add(launchButton);
-        frame.add(Box.createRigidArea(new Dimension(0, 10)));
+        bg.add(launchButton);
+        bg.add(Box.createRigidArea(new Dimension(0, 10)));
 
         rulesButton = new JButton("Rules");
-        frame.add(rulesButton);
+        bg.add(rulesButton);
         rulesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,12 +49,12 @@ public class Launcher extends JFrame {
             }
         });
         rulesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        frame.add(Box.createRigidArea(new Dimension(0, 10)));
+        bg.add(Box.createRigidArea(new Dimension(0, 10)));
 
         loadGameButton = new JButton("Load Game");
         loadGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        frame.add(loadGameButton);
-        frame.add(Box.createRigidArea(new Dimension(0, 10)));
+        bg.add(loadGameButton);
+        bg.add(Box.createRigidArea(new Dimension(0, 10)));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
