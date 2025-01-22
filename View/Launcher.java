@@ -20,7 +20,7 @@ public class Launcher extends JFrame {
         bg.setLayout(new BoxLayout(bg, BoxLayout.PAGE_AXIS));
         setContentPane(bg); // Set the custom panel as the content pane
 
-        setSize(500, 350);
+        setSize(500, 500);
         setLocation(750, 250);
         setResizable(false);
         bg.setBorder(BorderFactory.createEmptyBorder(25, 100, 25, 100));
@@ -30,10 +30,11 @@ public class Launcher extends JFrame {
         Image resizedImage = image.getScaledInstance(250, 100, Image.SCALE_SMOOTH);
         ImageIcon resizedLogo = new ImageIcon(resizedImage);
 
+        bg.add(Box.createRigidArea(new Dimension(0, 60)));
         JLabel logoLabel = new JLabel(resizedLogo);
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the image
         bg.add(logoLabel);
-        bg.add(Box.createRigidArea(new Dimension(0, 10)));
+        bg.add(Box.createRigidArea(new Dimension(0, 50)));
 
         launchButton = new JButton("Play Kwazam Chess");
         launchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
