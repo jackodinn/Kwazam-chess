@@ -17,7 +17,7 @@ public class Chessboard extends JFrame {
 
     public Chessboard() {
         this.boardLabels = new JLabel[height][width];
-        setTitle("Kwazam Chess");
+        setTitle("Kwazam Chess - Blue's Turn (Turn 1)");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         int squareSize = 100;
         setSize(width * squareSize, height * squareSize);
@@ -130,5 +130,10 @@ public class Chessboard extends JFrame {
     public JMenuItem getSaveGameMenuItem()
     {
         return saveGameItem;
+    }
+
+    public void updateTitle(String turn, int round) {
+        round = (round+2)/2;
+        setTitle("Kwazam Chess - " + turn + "'s Turn (Turn " + round + ")");
     }
 }

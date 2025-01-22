@@ -136,6 +136,7 @@ public class InputHandler extends MouseAdapter {
                         model.closeGame(board);
                     } else {
                         model.processRound(board.selectedPiece);
+                        board.updateTitle(model.getCurrentPlayer(), model.getRound());
                         board.flipBoard(model); // Flip the board after each turn
                         board.refreshBoard(model);
                     }
