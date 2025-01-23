@@ -73,6 +73,7 @@ public class ChessController {
             board.flipBoard(model);
             board.resetPieceImage(model);
         }
+        model.clearLogs();
         board.refreshBoard(model);
     }
 
