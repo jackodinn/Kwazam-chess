@@ -1,3 +1,7 @@
+/* Background.java
+ - Set background of the launcher
+ - Members invovlved: Andrew Wee, Lai Zi Xuan & Tan Ee Hang
+*/
 package View;
 
 import java.awt.*;

@@ -1,3 +1,7 @@
+/* Tor.java
+ - The Biz piece and their movement settings
+ - Members invovlved: Tan Ee Hang
+*/
 package Model;
 
 import java.awt.*;
@@ -12,7 +16,7 @@ public class Tor extends Chesspiece {
         super(color, imagePath, pos);
     }
 
-    // Movement logic ONLY, actual moving or capturing will not be implemented here
+    // Movement logic ONLY, actual moving or capturing will not be implemented here - Tan Ee Hang
     @Override
     public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();
@@ -20,10 +24,10 @@ public class Tor extends Chesspiece {
         int currentY = position.getY();
     
         int[][] movement = {
-            {1, 0},  // Right
-            {-1, 0}, // Left
-            {0, 1},  // Down
-            {0, -1}  // Up
+            {1, 0},  // East
+            {-1, 0}, // West
+            {0, 1},  // South
+            {0, -1}  // North
         };
     
         for (int[] moves : movement) {

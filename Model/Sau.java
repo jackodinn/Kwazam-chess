@@ -1,3 +1,7 @@
+/* Sau.java
+ - The Biz piece and their movement settings
+ - Members invovlved: Lai Zi Xuan
+*/
 package Model;
 
 import java.awt.*;
@@ -8,6 +12,7 @@ public class Sau extends Chesspiece {
 
     protected String name = "Sau";
 
+    // Constructor - Lai Zi Xuan
     public Sau(Color color, String imagePath, Position pos) {
         super(color, imagePath, pos);
     }
@@ -16,6 +21,7 @@ public class Sau extends Chesspiece {
         return name;
     }
 
+    // Movement logic ONLY, actual moving or capturing will not be implemented here - Lai Zi Xuan
     @Override
     public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();
@@ -23,7 +29,8 @@ public class Sau extends Chesspiece {
         int currentY = position.getY();
         
         // Implement movement
-        int[][] movement = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {-1, 1}, {-1, -1}, {1, -1}, {1, 1}};
+        int[][] movement = {{0, 1},
+         {0, -1}, {1, 0}, {-1, 0}, {-1, 1}, {-1, -1}, {1, -1}, {1, 1}};
 
         for (int[] moves : movement) {
             int targetX = currentX + moves[0];

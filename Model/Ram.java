@@ -1,3 +1,7 @@
+/* Ram.java
+ - The Biz piece and their movement settings
+ - Members invovlved: Andrew Wee
+*/
 package Model;
 
 import java.awt.*;
@@ -9,11 +13,13 @@ public class Ram extends Chesspiece {
     protected String name = "Ram";
     private int moveDirection;
 
+    // Constructor - Andrew Wee
     public Ram(Color color, String imagePath, Position pos) {
         super(color, imagePath, pos);
         this.moveDirection = (color == Color.BLUE) ? -1 : 1;
     }
 
+    // Getter and setter - Andrew Wee
     public int getMoveDirection() {
         return moveDirection;
     }
@@ -22,7 +28,7 @@ public class Ram extends Chesspiece {
         this.moveDirection = moveDirection;
     }
 
-    // Movement logic ONLY, actual moving or capturing will not be implemented here
+    // Movement logic ONLY, actual moving or capturing will not be implemented here - Andrew Wee
     @Override
     public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();

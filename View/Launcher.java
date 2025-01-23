@@ -1,4 +1,7 @@
-//Launcher.java
+/* Launcher.java
+ - GUI for the Main Menu
+ - Members invovlved: Andrew Wee, Lai Zi Xuan & Ahmed Haydar
+*/
 package View;
 
 import java.awt.*;
@@ -12,6 +15,7 @@ public class Launcher extends JFrame {
     private JButton rulesButton;
     private JButton loadGameButton;
 
+    // Constructor - Andrew Wee & Lai Zi Xuan
     public Launcher() {
         setTitle("Kwazam Chess Launcher");
 
@@ -61,6 +65,7 @@ public class Launcher extends JFrame {
         setVisible(true);
     }
 
+    // Display rules window - Ahmed Haydar
     private static void showRulesWindow() {
         if (popupframe != null && popupframe.isVisible()) {
             popupframe.dispose();
@@ -103,6 +108,7 @@ public class Launcher extends JFrame {
 
     }
 
+    // Getters - Lai Zi Xuan
     public JButton getLaunchButton() {
         return launchButton;
     }

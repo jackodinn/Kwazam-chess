@@ -1,3 +1,7 @@
+/* Chesspiece.java
+ - To keep track of coordinates
+ - Members invovlved: Andrew Wee & Lai Zi Xuan
+*/
 package Model;
 
 import java.awt.*;
@@ -10,12 +14,14 @@ public abstract class Chesspiece {
     protected Position position;
     protected Color color;
 
+    // Constructor - Andrew Wee
     public Chesspiece(Color color, String imagePath, Position pos) {
         this.color = color;
         this.images = resizeImageIcon(new ImageIcon(getClass().getResource(imagePath)), 90, 90); // Resize to 60x60 pixels
         this.position = pos;
     }
 
+    // Getters and setters - Andrew Wee
     public Color getColor() {
         return color;
     }
@@ -28,16 +34,26 @@ public abstract class Chesspiece {
         return images;
     }
 
+    public Position getPos() {
+        return position;
+    }
+
+    public void setPos(Position pos) {
+        this.position = pos;
+    }
+
     public void setImageIcon(ImageIcon icon) {
         this.images = icon;
     }
 
+    // Get image icon to put it through rotateImage() - Lai Zi Xuan
     public ImageIcon rotateImageIcon(ImageIcon icon) {
         Image image = icon.getImage();
         Image rotatedImage = rotateImage(image, 180); // Rotate by 180 degrees
         return new ImageIcon(rotatedImage);
     }
 
+    // Rotate the image from rotateImageIcon() - Lai Zi Xuan
     private Image rotateImage(Image image, double degrees) {
         double radians = Math.toRadians(degrees);
         double sin = Math.abs(Math.sin(radians));
@@ -58,16 +74,10 @@ public abstract class Chesspiece {
         return rotated;
     }
 
-    public Position getPos() {
-        return position;
-    }
-
-    public void setPos(Position pos) {
-        this.position = pos;
-    }
-
+    // Abstract function to calculate valid moves for the chesspiece - Andrew Wee
     public abstract Set<Position> ifValidMove(ChessModel cboard);
 
+    // Resize image icon to make icon fit inside each space - Andrew Wee
     private ImageIcon resizeImageIcon(ImageIcon icon, int width, int heightreal) {
         Image img = icon.getImage();
         Image resizedImg = img.getScaledInstance(width, heightreal, Image.SCALE_SMOOTH);

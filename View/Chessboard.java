@@ -1,3 +1,7 @@
+/* Chessboard.java
+ - GUI for the chessboard
+ - Members invovlved: Andrew Wee & Lai Zi Xuan
+*/
 package View;
 
 import Model.*;
@@ -8,16 +12,15 @@ public class Chessboard extends JFrame {
 
     public JLabel[][] boardLabels;
     private int height = 8; // Number of rows
-    private int width = 5;  // Number of columns
+    private int width = 5;
     private boolean isFlipped = false; // Track if the board is flipped
-
     public Chesspiece selectedPiece;
-
     private JMenuItem saveGameItem;
 
+    // Constructor - Andrew Wee
     public Chessboard() {
         this.boardLabels = new JLabel[height][width];
-        setTitle("Kwazam Chess - Blue's Turn (Turn 1)");
+        setTitle("Kwazam Chess");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         int squareSize = 100;
         setSize(width * squareSize, height * squareSize);
@@ -29,6 +32,7 @@ public class Chessboard extends JFrame {
         addMenuBar();
     }
 
+    // Top menu bar config - Lai Zi Xuan
     private void addMenuBar() {
         // Create the menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -61,6 +65,7 @@ public class Chessboard extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    // Initialize the chessboard with checkered design - Andrew Wee
     public void initializeBoard(ChessModel model) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -87,6 +92,7 @@ public class Chessboard extends JFrame {
         }
     }
 
+    // Refresh GUI every time an event happens - Andrew Wee
     public void refreshBoard(ChessModel model) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -104,16 +110,19 @@ public class Chessboard extends JFrame {
         }
     }
 
+    // Flip the board when a player moves - Lai Zi Xuan
     public void flipBoard(ChessModel model) {
         isFlipped = !isFlipped;
         rotatePieceImages(model);
         refreshBoard(model);
     }
 
+    // Check if board needs to be flipped - Lai Zi Xuan
     public boolean isFlipped() {
         return isFlipped;
     }
 
+    // Rotate piece images when flipping the board - Lai Zi Xuan
     private void rotatePieceImages(ChessModel model) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -127,11 +136,13 @@ public class Chessboard extends JFrame {
         }
     }
 
+    // Menu button for save game in menu bar
     public JMenuItem getSaveGameMenuItem()
     {
         return saveGameItem;
     }
 
+    // Keep track of whose turn it is
     public void updateTitle(String turn, int round) {
         round = (round+2)/2;
         setTitle("Kwazam Chess - " + turn + "'s Turn (Turn " + round + ")");

@@ -1,4 +1,7 @@
-//ChessModel.java
+/* ChessModel.java
+ - Place where all chess logic is defined
+ - Members invovlved: All members
+*/
 package Model;
 
 import View.Chessboard;
@@ -15,9 +18,9 @@ public class ChessModel implements Serializable {
     private Chesspiece[][] board;
     private int rows = 8;
     private int cols = 5;
+    private static final long serialVersionUID = 1L; // Add a serialversionuid for version control
 
-    private static final long serialVersionUID = 1L; //add a serialversionuid for version control
-
+    // Constructor - Tan Ee Hang
     public ChessModel() {
         System.out.println("Loading Model..");
         board = new Chesspiece[8][5];
@@ -25,20 +28,9 @@ public class ChessModel implements Serializable {
         clearLogs();
     }
 
-    public void setRound(int round) {
-        this.round = round;
-    }
-
+    // Getters and setters - All members
     public int getRound() {
         return round;
-    }
-
-    public void incRound() {
-        round++;
-    }
-
-    public void setCurrentPlayer(Color currentPlayer) {
-        this.currentPlayer = currentPlayer;
     }
 
     public Color getCurrentColor() {
@@ -58,11 +50,30 @@ public class ChessModel implements Serializable {
     }
 
     public int getBoardWidth() {
-        return board[0].length; // Number of columns
+        return board[0].length; // Return columns
     }
 
     public int getBoardHeight() {
-        return board.length; // Number of rows
+        return board.length; // Return rows
+    }
+
+    public String getDimensionAsString() {
+        return "Dimensions:" + rows + "," + cols + "\n";
+    }
+
+    public Chesspiece getPiece(int col, int row) {
+        if (col >= 0 && row >= 0 && row < board.length && col < board[row].length) {
+            return board[row][col];
+        }
+        return null;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public void setCurrentPlayer(Color currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public void setPiece(int col, int row, Chesspiece cp) {
@@ -74,13 +85,12 @@ public class ChessModel implements Serializable {
         }
     }
 
-    public Chesspiece getPiece(int col, int row) {
-        if (col >= 0 && row >= 0 && row < board.length && col < board[row].length) { // Corrected order
-            return board[row][col];
-        }
-        return null;
+    // round++ - Andrew Wee
+    public void incRound() {
+        round++;
     }
 
+    // Initialize all chesspieces on the board - Andrew Wee
     public void initializeChesspiece() {
         for (int col = 0; col < 5; col++) {
             board[6][col] = new Ram(Color.BLUE, "/images/RamBlue.png", new Position(col, 6)); // Keep position correct
@@ -125,6 +135,7 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Logic to move a piece on the board - Ahmed Haydar
     public boolean movePiece(int fromCol, int fromRow, int toCol, int toRow) {
         if (!checkBorder(fromCol, fromRow) || !checkBorder(toCol, toRow)) {
             return false;
@@ -166,15 +177,18 @@ public class ChessModel implements Serializable {
         return true;
     }
 
+    // Check if position is out of bounds - Ahmed Haydar
     private boolean checkBorder(int col, int row) {
         return col >= 0 && row >= 0 && row < getBoardHeight() && col < getBoardWidth();
     }
 
+    // Display round on terminal for debugging - Tan Ee Hang
     public void displayRound() {
         System.out.printf("Turn %d", (round / 2));
         System.out.println();
     }
 
+    // Process round when a move is done - Andrew Wee
     public void processRound(Chesspiece piece) {
         incRound();
         if (round % 2 == 0) {
@@ -196,6 +210,7 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Clear all chesspiece in current board - Lai Zi Xuan
     public void clearChessPiece() {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 5; x++) {
@@ -204,11 +219,13 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Dispose chessboard UI - Lai Zi Xuan
     public void closeGame(Chessboard board) {
         System.out.println("Closing game...");
         board.dispose();
     }
 
+    // Transform Xor/Tor into Tor/Xor - Andrew Wee & Tan Ee Hang
     public void transPiece() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
@@ -238,6 +255,7 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Detect if Sau is already captured - Lai Zi Xuan
     public boolean isSauCaptured(Color color) {
         for (int y = 0; y < getBoardHeight(); y++) {
             for (int x = 0; x < getBoardWidth(); x++) {
@@ -250,6 +268,7 @@ public class ChessModel implements Serializable {
         return true;
     }
 
+    // Detect if Sau is in check - Lai Zi Xuan
     public boolean isSauInCheck(Color sauColor) {
         Position sauPos = null;
         for (int y = 0; y < getBoardHeight(); y++) {
@@ -284,6 +303,7 @@ public class ChessModel implements Serializable {
         return false;
     }
 
+    // Detect if game is over - Lai Zi Xuan
     public boolean isGameOver() {
         // Check if either Sau is captured
         if (isSauCaptured(Color.BLUE)) {
@@ -299,9 +319,10 @@ public class ChessModel implements Serializable {
         return false; // Game is not over
     }
 
+    // Logging in a file - Andrew Wee & Tan Ee Hang
     public void logging(boolean capture, Chesspiece movingPiece, Chesspiece targetPiece, int fromCol, int fromRow,
             int toCol, int toRow) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream("terminal_log.txt", true); PrintStream printStream = new PrintStream(fileOutputStream)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("logs.txt", true); PrintStream printStream = new PrintStream(fileOutputStream)) {
 
             if (currentPlayer == Color.BLUE) {
                 printStream.printf("Turn %d", (round / 2));
@@ -320,8 +341,9 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Clear logs before editng inside the log file - Andrew Wee
     public void clearLogs() {
-        try (PrintStream printStream = new PrintStream("terminal_log.txt")) {
+        try (PrintStream printStream = new PrintStream("logs.txt")) {
             // Opening the file in write mode (without append) clears its content
             printStream.print(""); // Write an empty string to clear the file
         } catch (Exception e) {
@@ -330,6 +352,7 @@ public class ChessModel implements Serializable {
         }
     }
 
+    // Save game inside save file - Lai Zi Xuan
     public String getGameStateAsString() {
         StringBuilder sb = new StringBuilder();
 
@@ -360,21 +383,7 @@ public class ChessModel implements Serializable {
         return sb.toString();
     }
 
-    public String getDimensionAsString() {
-        return "Dimensions:" + rows + "," + cols + "\n";
-    }
-    public void playMove() {
-        playSound("move.wav");
-        System.out.println("Playing move sound");
-    }
-
-    public void playCapture() {
-        playSound("capture.wav");
-    }
-    public void playEndgame() {
-        playSound("gameover.wav");
-    }
-
+    // Search the sounds directory for the specified .wav files to play - Andrew Wee
     private void playSound(String soundFileName) {
         try {
             URL soundFileURL = getClass().getResource("/sounds/" + soundFileName);
@@ -389,5 +398,17 @@ public class ChessModel implements Serializable {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
+    // Play sound effects for each events - Tan Ee Hang
+    public void playMove() {
+        playSound("move.wav");
+    }
+
+    public void playCapture() {
+        playSound("capture.wav");
+    }
+    
+    public void playEndgame() {
+        playSound("gameover.wav");
     }
 }

@@ -1,12 +1,15 @@
-// ChessController.java
+/* ChessController.java
+ - Middle person between the ChessModel.java and the Chessboard.java
+ - Members invovlved: Andrew Wee & Lai Zi Xuan
+*/
 package Controller;
 
 import Model.*;
 import View.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.io.*;
 
 public class ChessController {
 
@@ -17,6 +20,7 @@ public class ChessController {
     private ImageIcon draggedPieceIcon = null;
     private static final Border border = BorderFactory.createEmptyBorder();
 
+    // Constructor - Andrew Wee
     public ChessController(ChessModel model, Chessboard board) {
         System.out.println("Loading ChessController..");
         this.model = model;
@@ -30,8 +34,9 @@ public class ChessController {
         addSaveGameListener();
     }
 
+    // Save game button - Lai Zi Xuan
     private void addSaveGameListener() {
-        JMenuItem saveGameItem = board.getSaveGameMenuItem(); // You need to add this method to Chessboard
+        JMenuItem saveGameItem = board.getSaveGameMenuItem();
         saveGameItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,8 +45,9 @@ public class ChessController {
         });
     }
 
+    // Save game function - Lai Zi Xuan
     private void saveGame() {
-        // Prompt the user to enter a name for the saved game
+        // Ask user to enter a name for the saved game
         String gameName = JOptionPane.showInputDialog(board, "Enter a name for the saved game:");
         if (gameName == null || gameName.trim().isEmpty()) {
             JOptionPane.showMessageDialog(board, "Game name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -54,9 +60,8 @@ public class ChessController {
             savesDir.mkdir();
         }
 
-        // Generate the filename
+        // Generate the file and save board state
         String fileName = "saves/" + gameName.toLowerCase().replace(" ", "_") + ".txt";
-
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(fileName))) {
             String dimensionState = model.getDimensionAsString();
             String gameState = model.getGameStateAsString();

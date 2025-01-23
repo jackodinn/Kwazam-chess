@@ -1,3 +1,7 @@
+/* Xor.java
+ - The Biz piece and their movement settings
+ - Members invovlved: Tan Ee Hang
+*/
 package Model;
 
 import java.awt.*;
@@ -12,6 +16,7 @@ public class Xor extends Chesspiece {
         super(color, imagePath, pos);
     }
 
+    // Movement logic ONLY, actual moving or capturing will not be implemented here - Tan Ee Hang
     @Override
     public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();
@@ -19,10 +24,10 @@ public class Xor extends Chesspiece {
         int currentY = position.getY();
     
         int[][] movement = {
-            {1, 1},  // Right
-            {-1, 1}, // Left
-            {-1, -1},  // Down
-            {1, -1}  // Up
+            {1, 1},  // Southeast
+            {-1, 1}, // Southwest
+            {-1, -1},  // Northwest
+            {1, -1}  // Northeast
         };
     
         for (int[] moves : movement) {

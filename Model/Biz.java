@@ -1,6 +1,10 @@
+/* Biz.java
+ - The Biz piece and their movement settings
+ - Members invovlved: Andrew Wee & Ahmed Haydar
+*/
 package Model;
 
-import java.awt.Color; // Make sure to import Color
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,17 +12,19 @@ public class Biz extends Chesspiece {
 
     protected String name = "Biz";
 
+    // Constructor - Andrew Wee
     public Biz(Color color, String imagePath, Position pos) {
         super(color, imagePath, pos);
     }
 
+    // Movement logic ONLY, actual moving or capturing will not be implemented here - Ahmed Haydar
     @Override
     public Set<Position> ifValidMove(ChessModel model) {
         Set<Position> validMoves = new HashSet<>();
         int currentX = position.getX();
         int currentY = position.getY();
     
-        // Define the knight's possible moves
+        // Define Biz all possible moves
         int[][] movement = {
             {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
             {1, 2}, {1, -2}, {-1, 2}, {-1, -2}

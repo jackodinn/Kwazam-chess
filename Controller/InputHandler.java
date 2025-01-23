@@ -1,4 +1,10 @@
-//InputHandler.java
+/* InputHandler.java
+ - To handle input events on the chessboard
+ - MousePressed event to handle the initial click
+ - MouseDragged event to handle the dragging of a piece
+ - MouseReleased event to handle the final release of a piece
+ - Members invovlved: Andrew Wee & Lai Zi Xuan
+*/
 package Controller;
 
 import Model.*;
@@ -10,7 +16,7 @@ import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-// Handle drag/drop events
+// Handle drag/drop events - Andrew Wee & Lai Zi Xuan
 public class InputHandler extends MouseAdapter {
 
     private ChessModel model;
@@ -20,18 +26,21 @@ public class InputHandler extends MouseAdapter {
     private ImageIcon draggedPieceIcon = null;
     private static final Border border = BorderFactory.createEmptyBorder();
 
+    // Constructor - Andrew Wee
     public InputHandler(Chessboard board, ChessModel model) {
         this.board = board;
         this.model = model;
     }
 
+    // Event where somewhere is clicked on the board - Andrew Wee & Lai Zi Xuan
     @Override
     public void mousePressed(MouseEvent e) {
         clearHighlighting();
-        // to pinpoint where has been clicked
+        // To pinpoint where has been clicked
         int col = mapToBoardCoordinate(e.getX(), board.getWidth(), model.getBoardWidth());
         int row = mapToBoardCoordinate(e.getY(), board.getHeight(), model.getBoardHeight());
 
+        // When flipped, reverse the coordinates tracking
         if (board.isFlipped()) {
             col = model.getBoardWidth() - 1 - col;
             row = model.getBoardHeight() - 1 - row;
@@ -46,20 +55,21 @@ public class InputHandler extends MouseAdapter {
                 draggedPieceIcon = piece.getImagePath();
                 draggedPieceLabel = new JLabel(draggedPieceIcon);
                 draggedPieceLabel.setOpaque(false);
-                board.getLayeredPane().add(draggedPieceLabel, JLayeredPane.DRAG_LAYER);// Take selected piece and throw into layered pane level
-                // Set the initial position of the dragged label
-                Point p = SwingUtilities.convertPoint(board, e.getX(), e.getY(), board.getLayeredPane());//pinpoint cursor
-                draggedPieceLabel.setBounds(p.x - draggedPieceIcon.getIconWidth() / 2, p.y - draggedPieceIcon.getIconHeight() / 2, draggedPieceIcon.getIconWidth(), draggedPieceIcon.getIconHeight());
+                board.getLayeredPane().add(draggedPieceLabel, JLayeredPane.DRAG_LAYER); // Take selected piece and throw into layered pane level
+                Point p = SwingUtilities.convertPoint(board, e.getX(), e.getY(), board.getLayeredPane()); // Pinpoint cursor
+                draggedPieceLabel.setBounds(p.x - draggedPieceIcon.getIconWidth() / 2, 
+                  p.y - draggedPieceIcon.getIconHeight() / 2, // Centering the icon
+                draggedPieceIcon.getIconWidth(), draggedPieceIcon.getIconHeight()); // Make dragged icon follow cursor
                 board.repaint();
                 // Temporarily clear the icon from the original board label
                 if (board.isFlipped()) {
                     col = model.getBoardWidth() - 1 - col;
                     row = model.getBoardHeight() - 1 - row;
-                    JLabel pieceOnBoard = board.boardLabels[row][col];
+                    JLabel pieceOnBoard = board.boardLabels[row][col]; // When dragging piece, hide the original icon
                     pieceOnBoard.setIcon(null);
                     pieceOnBoard.repaint();
                 } else {
-                    JLabel pieceOnBoard = board.boardLabels[row][col]; // When dragging piece, hide the original icon
+                    JLabel pieceOnBoard = board.boardLabels[row][col];
                     pieceOnBoard.setIcon(null);
                     pieceOnBoard.repaint();
                 }
@@ -75,7 +85,7 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
-    // Directly use piece movement logic as parameter to highlight valid moves
+    // Directly use piece movement logic as parameter to highlight valid moves - Andrew Wee & Lai Zi Xuan
     private void highlightValidMoves(Chesspiece piece) {
         if (piece != null) {
             Set<Position> validMoves = piece.ifValidMove(model);
@@ -96,7 +106,7 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
-    // Clear highlighting after completing an action
+    // Clear highlighting after completing an action - Andrew Wee
     private void clearHighlighting() {
         for (int r = 0; r < model.getBoardHeight(); r++) {
             for (int c = 0; c < model.getBoardWidth(); c++) {
@@ -105,19 +115,24 @@ public class InputHandler extends MouseAdapter {
         }
     }
 
+    // Event where a piece is dragged on the board - Andrew Wee
     @Override
     public void mouseDragged(MouseEvent e) {
         if (draggedPieceLabel != null) {
+            // If a piece is currently being dragged
             Point p = SwingUtilities.convertPoint(board, e.getX(), e.getY(), board.getLayeredPane());
-            draggedPieceLabel.setLocation(p.x - draggedPieceIcon.getIconWidth() / 2, p.y - draggedPieceIcon.getIconHeight() / 2);
+            draggedPieceLabel.setLocation(p.x - draggedPieceIcon.getIconWidth() / 2, 
+              p.y - draggedPieceIcon.getIconHeight() / 2);
             board.getLayeredPane().repaint(); // Repaint the layered pane
         }
     }
 
+    // Event where a piece is released on the board - Andrew Wee & Lai Zi Xuan
     @Override
     public void mouseReleased(MouseEvent e) {
         clearHighlighting(); // Clear highlighting when mouse released
         if (board.selectedPiece != null && selectedPos != null) {
+            // If a piece is selected and released
             int col = mapToBoardCoordinate(e.getX(), board.getWidth(), model.getBoardWidth());
             int row = mapToBoardCoordinate(e.getY(), board.getHeight(), model.getBoardHeight());
 
@@ -126,15 +141,17 @@ public class InputHandler extends MouseAdapter {
                 row = model.getBoardHeight() - 1 - row;
             }
 
-            // Only attempt to move if the release position is different from the press position
             if (col != selectedPos.getX() || row != selectedPos.getY()) {
+                // If release position is different from the initial position
                 if (model.movePiece(selectedPos.getX(), selectedPos.getY(), col, row)) {
+                    // If move is successful
                     board.refreshBoard(model);
-
                     if (model.isGameOver()) {
+                        // If somebody won
                         JOptionPane.showMessageDialog(board, "Game Over! " + model.getCurrentPlayer() + " wins!");
                         model.closeGame(board);
                     } else {
+                        // If nobody won yet
                         model.processRound(board.selectedPiece);
                         board.updateTitle(model.getCurrentPlayer(), model.getRound());
                         board.flipBoard(model); // Flip the board after each turn
@@ -184,6 +201,8 @@ public class InputHandler extends MouseAdapter {
      * @param boardSize The number of columns or rows on the chessboard.
      * @return The board array index.
      */
+
+    // To convert a pixel on the board to a corresponding space on the board
     private int mapToBoardCoordinate(int pixel, int dimension, int boardSize) {
         return pixel * boardSize / dimension;
     }

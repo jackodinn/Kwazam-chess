@@ -1,4 +1,7 @@
-//launcherController.java
+/* LauncherController.java
+ - To launch main menu and handle their functions
+ - Members invovlved: Andrew Wee & Lai Zi Xuan
+*/
 package Controller;
 
 import Model.*;
@@ -16,26 +19,30 @@ public class LauncherController implements WindowFocusListener {
     private final Launcher launcher;
     private static JFrame popupframe;
     private static JFrame settingsFrame;
-    private Clip menuMusicClip; // To control menu music (using Clip for WAV)
+    private Clip menuMusicClip;
 
+    // Constructor - Andrew Wee
     public LauncherController(Launcher launcher) {
         this.launcher = launcher;
         launcher.getLaunchButton().addActionListener(e -> handleLaunch());
         launcher.getLoadButton().addActionListener(event -> handleLoad());
         launcher.addWindowFocusListener(this);
-        playMenuMusic("menumusic.wav"); // Start playing music when the controller is created
+        playMenu("menumusic.wav"); // Start playing music when the controller is created
     }
 
+    // When launcher is focused - Andrew Wee
     @Override
     public void windowGainedFocus(WindowEvent e) {
-        playMenuMusic("menumusic.wav");
+        playMenu("menumusic.wav");
     }
 
+    // When launcher is not in focus - Andrew Wee
     @Override
     public void windowLostFocus(WindowEvent e) {
         stopMenuMusic();
     }
 
+    // Launch chessboard - Andrew Wee
     private void handleLaunch() {
         stopMenuMusic();
         System.out.println("Launching...");
@@ -49,8 +56,9 @@ public class LauncherController implements WindowFocusListener {
         launcher.setVisible(true);
     }
 
+    // Load button menu selection - Lai Zi Xuan
     private void handleLoad() {
-        playMenuMusic("menumusic.wav");
+        playMenu("menumusic.wav");
 
         if (popupframe != null && popupframe.isVisible()) {
             popupframe.dispose();
@@ -111,6 +119,7 @@ public class LauncherController implements WindowFocusListener {
         popupframe.setVisible(true);
     }
 
+    // Load chessboard from a saved game - Lai Zi Xuan
     private void loadGame(String gameName) {
         String fileName = "saves/" + gameName.toLowerCase().replace(" ", "_") + ".txt";
         System.out.println("Attempting to load game from: " + fileName);
@@ -164,6 +173,7 @@ public class LauncherController implements WindowFocusListener {
         }
     }
 
+    // Take data from save file and create pieces on board - Lai Zi Xuan
     private Chesspiece createPieceFromString(String pieceType, String color, int col, int row) {
         Color pieceColor = color.equals("Blue") ? Color.BLUE : Color.RED;
         switch (pieceType) {
@@ -182,7 +192,8 @@ public class LauncherController implements WindowFocusListener {
         }
     }
 
-    private void playMenuMusic(String soundFileName) {
+    // Play menu music - Andrew Wee & Tan Ee Hang
+    private void playMenu(String soundFileName) {
         try {
             if (menuMusicClip == null) {
                 File soundFile = new File("sounds/" + soundFileName);
@@ -202,6 +213,7 @@ public class LauncherController implements WindowFocusListener {
         }
     }
 
+    // Stop menu music - Andrew Wee & Tan Ee Hang
     private void stopMenuMusic() {
         if (menuMusicClip != null) { // Add null check here
             if (menuMusicClip.isRunning()) {
