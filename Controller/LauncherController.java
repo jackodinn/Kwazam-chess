@@ -18,7 +18,6 @@ public class LauncherController implements WindowFocusListener {
     private Chessboard view;
     private final Launcher launcher;
     private static JFrame popupframe;
-    private static JFrame settingsFrame;
     private Clip menuMusicClip;
 
     // Constructor - Andrew Wee

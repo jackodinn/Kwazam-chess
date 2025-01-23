@@ -1,7 +1,7 @@
 /* Chessboard.java
  - GUI for the chessboard
  - Members invovlved: Andrew Wee & Lai Zi Xuan
-*/
+ */
 package View;
 
 import Model.*;
@@ -16,6 +16,7 @@ public class Chessboard extends JFrame {
     private boolean isFlipped = false; // Track if the board is flipped
     public Chesspiece selectedPiece;
     private JMenuItem saveGameItem;
+    private JMenuItem resetGameItem;
 
     // Constructor - Andrew Wee
     public Chessboard() {
@@ -40,13 +41,8 @@ public class Chessboard extends JFrame {
         // Create the "File" menu
         JMenu fileMenu = new JMenu("File");
         saveGameItem = new JMenuItem("Save Game");
+        resetGameItem = new JMenuItem("Reset Game");
         JMenuItem exitItem = new JMenuItem("Exit");
-
-        // Add action listeners to the menu items
-        saveGameItem.addActionListener(e -> {
-            System.out.println("Save Game & Exit");
-            // Add save game logic here
-        });
 
         exitItem.addActionListener(e -> {
             System.out.println("Exit clicked");
@@ -55,6 +51,7 @@ public class Chessboard extends JFrame {
 
         // Add items to the "File" menu
         fileMenu.add(saveGameItem);
+        fileMenu.add(resetGameItem);
         fileMenu.addSeparator(); // Add a separator line
         fileMenu.add(exitItem);
 
@@ -136,15 +133,32 @@ public class Chessboard extends JFrame {
         }
     }
 
+    //rotate piece image back when you reset board manually - Lai zi xuan
+    public void resetPieceImage(ChessModel model) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Chesspiece piece = model.getPiece(col, row);
+                if (piece != null) {
+                    ImageIcon currentIcon = piece.getImagePath();
+                    ImageIcon rotatedIcon = piece.rotateImageIcon(currentIcon);
+                    piece.setImageIcon(rotatedIcon);
+                }
+            }
+        }
+    }
+
     // Menu button for save game in menu bar
-    public JMenuItem getSaveGameMenuItem()
-    {
+    public JMenuItem getSaveGameMenuItem() {
         return saveGameItem;
+    }
+
+    public JMenuItem getResetGameItem() {
+        return resetGameItem;
     }
 
     // Keep track of whose turn it is
     public void updateTitle(String turn, int round) {
-        round = (round+2)/2;
+        round = (round + 2) / 2;
         setTitle("Kwazam Chess - " + turn + "'s Turn (Turn " + round + ")");
     }
 }

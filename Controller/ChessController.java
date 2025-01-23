@@ -6,6 +6,7 @@ package Controller;
 
 import Model.*;
 import View.*;
+import java.awt.Color;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
@@ -32,6 +33,7 @@ public class ChessController {
         board.addMouseListener(inputHandler);
         board.addMouseMotionListener(inputHandler);
         addSaveGameListener();
+        addResetGameListener();
     }
 
     // Save game button - Lai Zi Xuan
@@ -43,6 +45,35 @@ public class ChessController {
                 saveGame();
             }
         });
+    }
+
+    //reset game listener - Lai zi xuan
+    private void addResetGameListener()
+    {
+        JMenuItem resetGameButton = board.getResetGameItem();
+        resetGameButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                resetGame();
+            }
+        });
+    }
+
+    //Reset game function - Lai zi xuan
+    private void resetGame()
+    {
+        model.clearChessPiece();
+        model.initializeChesspiece(); 
+        model.setRound(0);
+        model.setCurrentPlayer(Color.BLUE);
+        if(board.isFlipped())
+        {
+            board.flipBoard(model);
+            board.resetPieceImage(model);
+        }
+        board.refreshBoard(model);
     }
 
     // Save game function - Lai Zi Xuan
