@@ -22,7 +22,7 @@ public class LauncherController implements WindowFocusListener {
 
     private static LauncherController instance;
 
-    // Constructor - Andrew Wee
+    // Private Constructor - Andrew Wee
     private LauncherController(Launcher launcher) {
         this.launcher = launcher;
         launcher.getLaunchButton().addActionListener(e -> handleLaunch());
@@ -31,6 +31,7 @@ public class LauncherController implements WindowFocusListener {
         playMenu("menumusic.wav"); // Start playing music when the controller is created
     }
 
+    // Singleton method instance - Andrew Wee
     public static LauncherController getInstance(Launcher launcher) {
         if (instance == null) {
             instance = new LauncherController(launcher);
