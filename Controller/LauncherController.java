@@ -1,7 +1,7 @@
 /* LauncherController.java
  - To launch main menu and handle their functions
  - Members invovlved: Andrew Wee & Lai Zi Xuan
-*/
+ */
 package Controller;
 
 import Model.*;
@@ -31,7 +31,7 @@ public class LauncherController implements WindowFocusListener {
         playMenu("menumusic.wav"); // Start playing music when the controller is created
     }
 
-    // Singleton method instance - Andrew Wee
+    //singleton method instance - Andrew wee
     public static LauncherController getInstance(Launcher launcher) {
         if (instance == null) {
             instance = new LauncherController(launcher);
@@ -168,6 +168,8 @@ public class LauncherController implements WindowFocusListener {
             InputHandler inputHandler = new InputHandler(view, model);
             view.addMouseListener(inputHandler);
             view.addMouseMotionListener(inputHandler);
+            addSaveGameListener();
+            addResetGameListener();
 
             System.out.println("Game loaded successfully: " + gameName);
         } catch (FileNotFoundException e) {
@@ -228,6 +230,72 @@ public class LauncherController implements WindowFocusListener {
             if (menuMusicClip.isRunning()) {
                 menuMusicClip.stop();
             }
+        }
+    }
+
+    // Save game button - Lai Zi Xuan
+    private void addSaveGameListener() {
+        JMenuItem saveGameItem = view.getSaveGameMenuItem();
+        saveGameItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveGame();
+            }
+        });
+    }
+
+    //reset game listener - Lai zi xuan
+    private void addResetGameListener() {
+        JMenuItem resetGameButton = view.getResetGameItem();
+        resetGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+    }
+
+    //Reset game function - Lai zi xuan
+    private void resetGame() {
+        model.clearChessPiece();
+        model.initializeChesspiece();
+        model.setRound(0);
+        model.setCurrentPlayer(Color.BLUE);
+        if (view.isFlipped()) {
+            view.flipBoard(model);
+            view.resetPieceImage(model);
+        }
+        model.clearLogs();
+        view.refreshBoard(model);
+    }
+
+    // Save game function - Lai Zi Xuan
+    private void saveGame() {
+        // Ask user to enter a name for the saved game
+        String gameName = JOptionPane.showInputDialog(view, "Enter a name for the saved game:");
+        if (gameName == null || gameName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Game name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Create the "saves" directory if it doesn't exist
+        File savesDir = new File("saves");
+        if (!savesDir.exists()) {
+            savesDir.mkdir();
+        }
+
+        // Generate the file and save board state
+        String fileName = "saves/" + gameName.toLowerCase().replace(" ", "_") + ".txt";
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(fileName))) {
+            String dimensionState = model.getDimensionAsString();
+            String gameState = model.getGameStateAsString();
+            writer.write(dimensionState);
+            writer.write(gameState);
+            System.out.println("Game saved successfully to " + fileName);
+            JOptionPane.showMessageDialog(view, "Game saved as: " + gameName, "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(view, "Error saving the game.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
