@@ -20,13 +20,22 @@ public class LauncherController implements WindowFocusListener {
     private static JFrame popupframe;
     private Clip menuMusicClip;
 
+    private static LauncherController instance;
+
     // Constructor - Andrew Wee
-    public LauncherController(Launcher launcher) {
+    private LauncherController(Launcher launcher) {
         this.launcher = launcher;
         launcher.getLaunchButton().addActionListener(e -> handleLaunch());
         launcher.getLoadButton().addActionListener(event -> handleLoad());
         launcher.addWindowFocusListener(this);
         playMenu("menumusic.wav"); // Start playing music when the controller is created
+    }
+
+    public static LauncherController getInstance(Launcher launcher) {
+        if (instance == null) {
+            instance = new LauncherController(launcher);
+        }
+        return instance;
     }
 
     // When launcher is focused - Andrew Wee
