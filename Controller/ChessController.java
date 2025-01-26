@@ -20,6 +20,7 @@ public class ChessController {
     private JLabel draggedPieceLabel = null;
     private ImageIcon draggedPieceIcon = null;
     private static final Border border = BorderFactory.createEmptyBorder();
+    private static ChessController instance;
 
     // Constructor - Andrew Wee
     public ChessController(ChessModel model, Chessboard board) {
@@ -34,6 +35,13 @@ public class ChessController {
         board.addMouseMotionListener(inputHandler);
         addSaveGameListener();
         addResetGameListener();
+    }
+    // Singleton method instance - Andrew wee
+    public static ChessController getInstance(ChessModel model, Chessboard board) {
+        if (instance == null) {
+            instance = new ChessController(model, board);
+        }
+        return instance;
     }
 
     // Save game button - Lai Zi Xuan

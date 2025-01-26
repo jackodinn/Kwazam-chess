@@ -1,28 +1,23 @@
 Turn 0
-Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
+Blue Ram (2, 6) -> (2, 5)
+Red Ram (3, 1) -> (3, 2)
 Turn 1
-Blue Ram (3, 5) -> (3, 4)
-Turn 0
 Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
-Turn 1
-Blue Ram (3, 5) -> (3, 4)
-Red Ram (1, 2) -> (1, 3)
-Turn 0
-Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
-Turn 1
-Blue Ram (3, 5) -> (3, 4)
-Red Ram (1, 2) -> (1, 3)
-Turn 0
-Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
-Turn 1
-Blue Ram (3, 5) -> (3, 4)
-Red Ram (1, 2) -> (1, 3)
-Turn 0
-Blue Ram (3, 6) -> (3, 5)
-Red Ram (1, 1) -> (1, 2)
-Turn 1
-Blue Ram (3, 5) -> (3, 4)
+Red Ram (0, 1) -> (0, 2)
+Turn 2
+Blue Ram (2, 5) -> (2, 4)
+Red Ram (0, 2) -> (0, 3)
+Turn 3
+Blue Xor (4, 7) x Red Ram (0, 3)
+Red Ram (2, 1) -> (2, 2)
+Turn 4
+Blue Biz (3, 7) -> (2, 5)
+Red Tor (0, 0) x Blue Tor (0, 3)
+Turn 5
+Blue Biz (2, 5) -> (1, 3)
+Red Ram (3, 2) -> (3, 3)
+Turn 6
+Blue Biz (1, 3) -> (3, 2)
+Red Biz (3, 0) -> (4, 2)
+Turn 7
+Blue Biz (3, 2) x Red Sau (2, 0)

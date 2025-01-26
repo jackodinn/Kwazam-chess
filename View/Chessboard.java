@@ -133,7 +133,7 @@ public class Chessboard extends JFrame {
         }
     }
 
-    //rotate piece image back when you reset board manually - Lai zi xuan
+    // Rotate piece image back when you reset board manually - Lai Zi Xuan
     public void resetPieceImage(ChessModel model) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -147,7 +147,7 @@ public class Chessboard extends JFrame {
         }
     }
 
-    // Menu button for save game in menu bar
+    // Menu button for save and reset game in menu bar
     public JMenuItem getSaveGameMenuItem() {
         return saveGameItem;
     }

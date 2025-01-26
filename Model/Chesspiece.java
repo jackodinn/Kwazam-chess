@@ -46,7 +46,7 @@ public abstract class Chesspiece {
         this.images = icon;
     }
 
-    // Get image icon to put it through rotateImage() - Lai Zi Xuan
+    // Get image icon to put it through rotateImage() (Template Method) - Lai Zi Xuan
     public ImageIcon rotateImageIcon(ImageIcon icon) {
         Image image = icon.getImage();
         Image rotatedImage = rotateImage(image, 180); // Rotate by 180 degrees

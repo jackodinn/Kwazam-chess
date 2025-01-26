@@ -31,7 +31,7 @@ public class LauncherController implements WindowFocusListener {
         playMenu("menumusic.wav"); // Start playing music when the controller is created
     }
 
-    //singleton method instance - Andrew wee
+    // Singleton method instance - Andrew wee
     public static LauncherController getInstance(Launcher launcher) {
         if (instance == null) {
             instance = new LauncherController(launcher);
